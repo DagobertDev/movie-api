@@ -1,6 +1,3 @@
 ﻿namespace MovieApi.Model;
 
-public class Movie
-{
-	
-}
+public record Movie(int Id, string Name);
