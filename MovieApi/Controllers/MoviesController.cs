@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieApi.Model;
+using MovieApi.Services;
 
 namespace MovieApi.Controllers;
 
@@ -7,20 +8,22 @@ namespace MovieApi.Controllers;
 [Route("[controller]")]
 public class MoviesController : ControllerBase
 {
-	private static readonly Movie[] Movies =
+	private readonly IMovieService _movieService;
+
+	public MoviesController(IMovieService movieService)
 	{
-		new(1, "Movie 1"), new(2, "Movie 2"), new(3, "Movie 3"),
-	};
+		_movieService = movieService;
+	}
 
 	[HttpGet]
-	public IEnumerable<Movie> GetAll()
+	public Task<IEnumerable<Movie>> GetAll()
 	{
-		return Movies;
+		return _movieService.GetTrendingMovies();
 	}
 
 	[HttpGet("{id:int}")]
-	public Movie? GetById(int id)
+	public Task<Movie?> GetById(int id)
 	{
-		return Movies.SingleOrDefault(movie => movie.Id == id);
+		return _movieService.GetMovie(id);
 	}
 }
