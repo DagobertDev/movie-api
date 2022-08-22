@@ -1,4 +1,5 @@
-﻿using MovieApi.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieApi.Model;
 
 namespace MovieApi.Services;
 
@@ -8,10 +9,13 @@ public class MovieService : IMovieService
 
 	private readonly HttpClient _httpClient;
 	private readonly string _key;
+	private readonly MovieContext _movieContext;
 
-	public MovieService(HttpClient httpClient, IConfiguration configuration)
+	public MovieService(HttpClient httpClient, IConfiguration configuration, MovieContext movieContext)
 	{
-		_httpClient = httpClient;
+		ArgumentNullException.ThrowIfNull(configuration);
+		_httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+		_movieContext = movieContext ?? throw new ArgumentNullException(nameof(movieContext));
 		_key = configuration.GetValue<string>("MovieDBKey");
 	}
 
@@ -25,10 +29,28 @@ public class MovieService : IMovieService
 
 	public async Task<Movie?> GetMovie(int id)
 	{
-		var uri = $"{BaseUri}/movie/{id}?api_key={_key}";
+		var movie = await _movieContext.Movies.SingleOrDefaultAsync(movie => movie.Id == id);
+		if (movie != null)
+		{
+			return movie;
+		}
 
-		var movie = await _httpClient.GetFromJsonAsync<DBMovie>(uri);
-		return movie == null ? null : new Movie(movie.Id, movie.Title);
+		var uri = $"{BaseUri}/movie/{id}?api_key={_key}";
+		var dbMovie = await _httpClient.GetFromJsonAsync<DBMovie>(uri);
+		if (dbMovie == null)
+		{
+			return null;
+		}
+
+		movie = new Movie(dbMovie.Id, dbMovie.Title);
+		await SaveMovie(movie);
+		return movie;
+	}
+
+	private async Task SaveMovie(Movie movie)
+	{
+		_movieContext.Movies.Add(movie);
+		await _movieContext.SaveChangesAsync();
 	}
 
 	private record TrendingResponse(IEnumerable<DBMovie> Results);

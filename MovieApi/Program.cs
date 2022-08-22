@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using MovieApi;
 using MovieApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<MovieContext>(options =>
+	options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IMovieService, MovieService>();
 
