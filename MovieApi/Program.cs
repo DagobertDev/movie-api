@@ -16,6 +16,7 @@ builder.Services.AddDbContext<MovieContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
