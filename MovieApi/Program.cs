@@ -23,6 +23,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 {
 	options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
 	options.SlidingExpiration = true;
+	options.Cookie.HttpOnly = true;
+	options.Events.OnRedirectToLogin = context =>
+	{
+		context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+		return Task.CompletedTask;
+	};
 });
 
 var app = builder.Build();
