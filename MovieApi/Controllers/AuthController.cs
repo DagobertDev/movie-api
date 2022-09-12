@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieApi.Model;
 
@@ -10,6 +11,7 @@ namespace MovieApi.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
+	[AllowAnonymous]
 	[HttpPost("signIn")]
 	public async Task<bool> SignIn(SignInRequest request)
 	{
