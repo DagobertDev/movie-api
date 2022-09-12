@@ -15,12 +15,6 @@ public class UsersController : ControllerBase
 		_userService = userService ?? throw new ArgumentNullException(nameof(userService));
 	}
 
-	[HttpPost]
-	public Task<User> Add(string name)
-	{
-		return _userService.Add(name);
-	}
-
 	[HttpGet("{id:guid}")]
 	public Task<User?> GetById(Guid id)
 	{
