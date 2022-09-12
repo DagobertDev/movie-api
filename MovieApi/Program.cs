@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MovieApi;
 using MovieApi.Services;
@@ -17,6 +18,11 @@ builder.Services.AddDbContext<MovieContext>(options =>
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+	options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+	options.SlidingExpiration = true;
+});
 
 var app = builder.Build();
 
@@ -29,6 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
