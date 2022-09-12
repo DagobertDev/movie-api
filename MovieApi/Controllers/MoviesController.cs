@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieApi.Model;
 using MovieApi.Services;
@@ -5,6 +6,7 @@ using MovieApi.Services;
 namespace MovieApi.Controllers;
 
 [ApiController]
+[AllowAnonymous]
 [Route("[controller]")]
 public class MoviesController : ControllerBase
 {
