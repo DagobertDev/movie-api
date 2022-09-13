@@ -58,4 +58,18 @@ public class AuthController : ControllerBase
 	{
 		HttpContext.SignOutAsync();
 	}
+
+	[AllowAnonymous]
+	[HttpGet]
+	public async Task<User?> GetCurrentUser()
+	{
+		var name = User.Claims.SingleOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+
+		if (name is null)
+		{
+			return null;
+		}
+
+		return await _userService.GetByName(name.Value);
+	}
 }
