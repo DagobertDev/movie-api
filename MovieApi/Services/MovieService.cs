@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
 using MovieApi.Model;
 
 namespace MovieApi.Services;
@@ -36,7 +37,18 @@ public class MovieService : IMovieService
 		}
 
 		var uri = $"{BaseUri}/movie/{id}?api_key={_key}";
-		var dbMovie = await _httpClient.GetFromJsonAsync<DBMovie>(uri);
+
+		DBMovie? dbMovie;
+
+		try
+		{
+			dbMovie = await _httpClient.GetFromJsonAsync<DBMovie>(uri);
+		}
+		catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+		{
+			return null;
+		}
+
 		if (dbMovie == null)
 		{
 			return null;
