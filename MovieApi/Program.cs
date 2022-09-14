@@ -22,6 +22,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
 	options.SlidingExpiration = true;
+	options.Cookie.Expiration = TimeSpan.FromHours(24);
 	options.Cookie.SameSite = SameSiteMode.None;
 	options.Cookie.HttpOnly = true;
 	options.Events.OnRedirectToLogin = context =>
