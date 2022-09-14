@@ -24,6 +24,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 	options.SlidingExpiration = true;
 	options.ExpireTimeSpan = TimeSpan.FromHours(24);
 	options.Cookie.SameSite = SameSiteMode.None;
+	options.Cookie.MaxAge = TimeSpan.FromHours(24);
 	options.Cookie.HttpOnly = true;
 	options.Events.OnRedirectToLogin = context =>
 	{
