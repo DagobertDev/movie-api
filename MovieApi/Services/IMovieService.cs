@@ -1,4 +1,4 @@
-﻿using MovieApi.Model;
+﻿using MovieApi.Domain;
 
 namespace MovieApi.Services;
 

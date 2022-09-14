@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MovieApi.Model;
+using MovieApi.Domain;
 using MovieApi.Services;
 
 namespace MovieApi.Controllers;

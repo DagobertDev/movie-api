@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MovieApi.Model;
+namespace MovieApi.Domain;
 
 public record SignInRequest([EmailAddress] string Email, string Password);
