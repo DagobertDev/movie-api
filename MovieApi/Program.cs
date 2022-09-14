@@ -21,8 +21,8 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
-	options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
 	options.SlidingExpiration = true;
+	options.Cookie.SameSite = SameSiteMode.None;
 	options.Cookie.HttpOnly = true;
 	options.Events.OnRedirectToLogin = context =>
 	{
